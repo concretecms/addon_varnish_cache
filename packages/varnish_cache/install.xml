@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<concrete5-cif version="1.0">
+    <singlepages>
+        <page name="Varnish" path="/dashboard/varnish" filename="/dashboard/varnish/view.php" pagetype="" description="" package="varnish_cache">
+			<attributes>
+				<attributekey handle="meta_keywords">
+					<value>cache, varnish</value>
+				</attributekey>
+			</attributes>        
+        </page>
+        <page name="Statistics" path="/dashboard/varnish/statistics" filename="/dashboard/varnish/statistics.php" pagetype="" description="" package="varnish_cache">
+			<attributes>
+				<attributekey handle="icon_dashboard">
+					<value>icon-signal</value>
+				</attributekey>
+			</attributes>        
+        </page>
+        <page name="Configuration" path="/dashboard/varnish/configuration" filename="/dashboard/varnish/configuration.php" pagetype="" description="" package="varnish_cache">
+			<attributes>
+				<attributekey handle="meta_keywords">
+					<value>server, configuration, varnish</value>
+				</attributekey>
+				<attributekey handle="icon_dashboard">
+					<value>icon-globe</value>
+				</attributekey>
+			</attributes>        
+        </page>
+        <page name="Settings" path="/dashboard/varnish/settings" filename="/dashboard/varnish/settings.php" pagetype="" description="" package="varnish_cache">
+			<attributes>
+				<attributekey handle="meta_keywords">
+					<value>server, configuration, varnish</value>
+				</attributekey>
+				<attributekey handle="icon_dashboard">
+					<value>icon-cog</value>
+				</attributekey>
+			</attributes>        
+        </page>
+    </singlepages>
+</concrete5-cif>
