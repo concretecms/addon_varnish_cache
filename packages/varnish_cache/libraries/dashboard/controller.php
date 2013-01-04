@@ -10,7 +10,15 @@ class DashboardVarnishBaseController extends DashboardBaseController {
 
 		$cache = PageCache::getLibrary();
 		$this->cache = PageCache::getLibrary();
+		$this->socket = $this->cache->getVarnishAdminSocket();
+		try {
+			@$this->socket->connect(1);
+		} catch(Exception $e) {
+			$this->redirect('/dashboard/varnish/settings', 'invalid_settings');
+		}
+
 		$this->set('cache', $cache);
+		$this->set('socket', $this->socket);
 	}
 
 	

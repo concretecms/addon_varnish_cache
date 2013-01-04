@@ -8,6 +8,16 @@
 				</attributekey>
 			</attributes>        
         </page>
+        <page name="Start/Stop Server" path="/dashboard/varnish/restart" filename="/dashboard/varnish/restart.php" pagetype="" description="" package="varnish_cache">
+			<attributes>
+				<attributekey handle="meta_keywords">
+					<value>cache, restart, server, varnish</value>
+				</attributekey>
+				<attributekey handle="icon_dashboard">
+					<value>icon-wrench</value>
+				</attributekey>
+			</attributes>        
+        </page>
         <page name="Statistics" path="/dashboard/varnish/statistics" filename="/dashboard/varnish/statistics.php" pagetype="" description="" package="varnish_cache">
 			<attributes>
 				<attributekey handle="icon_dashboard">
@@ -15,7 +25,7 @@
 				</attributekey>
 			</attributes>        
         </page>
-        <page name="Configuration" path="/dashboard/varnish/configuration" filename="/dashboard/varnish/configuration.php" pagetype="" description="" package="varnish_cache">
+        <page name="Server Configuration" path="/dashboard/varnish/server_configuration" filename="/dashboard/varnish/server_configuration.php" pagetype="" description="" package="varnish_cache">
 			<attributes>
 				<attributekey handle="meta_keywords">
 					<value>server, configuration, varnish</value>

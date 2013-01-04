@@ -6,7 +6,7 @@ class VarnishCachePackage extends Package {
    
     protected $pkgHandle = 'varnish_cache';
     protected $appVersionRequired = '5.6.1a1';
-    protected $pkgVersion = '0.8.0';
+    protected $pkgVersion = '0.8.1';
 
     public function getPackageDescription() {
         return t('Adds administrative hooks into Varnish and provides a concrete5 full page caching library for it.');
@@ -28,6 +28,12 @@ class VarnishCachePackage extends Package {
 
     public function install() {
         $pkg = parent::install();
+        $ci = new ContentImporter();
+        $ci->importContentFile($pkg->getPackagePath() . '/install.xml');
+    }
+
+    public function upgrade() {
+        $pkg = Package::getByHandle('varnish_cache');
         $ci = new ContentImporter();
         $ci->importContentFile($pkg->getPackagePath() . '/install.xml');
     }
