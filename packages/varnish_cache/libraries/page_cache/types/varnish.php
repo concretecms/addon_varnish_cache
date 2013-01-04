@@ -14,7 +14,7 @@ class VarnishPageCache extends PageCache {
 		return $s;
 	}
 
-	public function getRecord(Request $req) {
+	public function getRecord($mixed) {
 		/*
 		$file = $this->getCacheFile($req);
 		if (file_exists($file)) {
