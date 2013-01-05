@@ -15,16 +15,8 @@ class VarnishPageCache extends PageCache {
 	}
 
 	public function getRecord($mixed) {
-		/*
-		$file = $this->getCacheFile($req);
-		if (file_exists($file)) {
-			$contents = file_get_contents($file);
-			$record = @unserialize($contents);
-			if ($record instanceof PageCacheRecord) {
-				return $record;
-			}
-		}
-		*/
+		$ur = new UnknownPageCacheRecord();
+		return $ur;
 	}
 
 	/*
@@ -49,7 +41,7 @@ class VarnishPageCache extends PageCache {
 	}
 	*/
 
-	public function deleteByCacheRecord(PageCacheRecord $rec) {
+	public function purgeByRecord(PageCacheRecord $rec) {
 		/*
 		$file = $this->getCacheFile($rec);
 		if ($file && file_exists($file)) {
@@ -59,19 +51,20 @@ class VarnishPageCache extends PageCache {
 	}
 
 	public function flush() {
-		/*
-		$fh = Loader::helper("file");
-		$fh->removeAll(DIR_FILES_PAGE_CACHE);
-		*/
+		$vas = $this->getVarnishAdminSocket();
+		$vas->connect(1);
+		$vas->purge_url('.');
 	}
 
-	public function delete(Page $c) {
-		/*
-		$file = $this->getCacheFile($c);
-		if ($file && file_exists($file)) {
-			unlink($file);
+	public function purge(Page $c) {
+		$vas = $this->getVarnishAdminSocket();
+		$vas->connect(1);
+		if (!$c->getCollectionPath()) {
+			$path = '/';
+		} else {
+			$path = $c->getCollectionPath();
 		}
-		*/
+		$vas->purge_url($path);
 	}
 
 	public function set(Page $c, $content) {
