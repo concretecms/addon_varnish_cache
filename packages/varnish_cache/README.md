@@ -12,11 +12,14 @@
 	define('VARNISH_CACHE_VERSION', 'version'); // e.g. 3.0.2
 	
 6. Copy /scripts/varnishstats.xml.php to your Varnish server. Make sure it is accessible somewhere. Make sure it is pointing to the right binary in the script itself. This script is optional.
-7. Start Varnish with a command similar to this one:
+7. Copy /scripts/tools/poll.php to tools/poll.php and make sure that it is accessible through yoursite.com/index.php/tools/poll/
+8. Start Varnish with a command similar to this one:
 
 	sudo varnishd -a your.server.com:80 -T 127.0.0.1:6082 -s file,/tmp,500M
 	
-You can also start varnishd with a secret key file if you'd like.
+or
+
+	sudo varnishd -a your.server.com:80 -T 127.0.0.1:6082 -S /opt/local/etc/varnish/secret_key -s file,/tmp,500M
 
 8. Add the relevant admin host information to your server
 9. Enable the concrete5 Varnish config file in Dashboard > Varnish > Configuration

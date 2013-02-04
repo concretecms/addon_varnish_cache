@@ -8,6 +8,13 @@
 backend web1 {
     .host = "concrete5";
     .port = "8080";
+    .probe = {
+         .url = "/index.php/tools/poll";
+         .interval = 10s;
+         .timeout = 1s;
+         .window = 5;
+         .threshold = 2;
+    }
 }
 
 
@@ -25,6 +32,12 @@ sub vcl_recv {
     ## set the backend to the Catalyst site
     set req.backend = web1;
 
+    if (req.backend.healthy) {
+        set req.grace = 15s;
+    } else {
+        set req.grace = 4h;
+    }
+
     ## this is an example of switching betwen backends based on path
     #if ( req.url ~ "^/static-test") {
     #    set req.backend = staticsite;
@@ -35,7 +48,7 @@ sub vcl_recv {
     ## IE - shift-reload causes cache refresh - We may not want this in 
     ## production but useful during initial deployment and testing
     if (req.http.Cache-Control ~ "no-cache") {
-    	ban(req.url);
+        ban(req.url);
     }
     
     ## Cache based on file path - if it's in /static/, it probably 
@@ -96,6 +109,8 @@ sub vcl_fetch {
     #    deliver;
     #}
     
+    set beresp.grace = 4h;
+
     if (req.request == "GET" && 
         req.url ~ "\.(gif|jpg|swf|css|js|png|jpg|jpeg|gif|png|tiff|tif|svg|swf|ico|css|js|vsd|doc|ppt|pps|xls|mp3|mp4|m4a|ogg|mov|avi|wmv|sxw|zip|gz|bz2|tgz|tar|rar|odc|odb|odf|odg|odi|odp|ods|odt|sxc|sxd|sxi|sxw|dmg|torrent|deb|msi|iso|rpm)$" ) {
             unset beresp.http.cookie;
