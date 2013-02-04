@@ -21,6 +21,6 @@ or
 
 	sudo varnishd -a your.server.com:80 -T 127.0.0.1:6082 -S /opt/local/etc/varnish/secret_key -s file,/tmp,500M
 
-8. Add the relevant admin host information to your server
-9. Enable the concrete5 Varnish config file in Dashboard > Varnish > Configuration
-10. Start Varnish via the dashboard.
+9. Add the relevant admin host information to your server
+10. Enable the concrete5 Varnish config file in Dashboard > Varnish > Configuration
+11. Start Varnish via the dashboard.
