@@ -38,6 +38,10 @@ sub vcl_recv {
         set req.grace = 4h;
     }
 
+    if (req.url ~ "^/login" || req.url ~ "^/dashboard"  || req.url ~ "^/!") {
+       set req.url = "/page_not_found/";
+    }
+
     ## this is an example of switching betwen backends based on path
     #if ( req.url ~ "^/static-test") {
     #    set req.backend = staticsite;
