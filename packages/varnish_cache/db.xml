@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<schema version="0.3">
+	<table name="VarnishServers">
+		 <field name="productID" type="I" size="10">
+			<KEY/>
+			<autoincrement/>
+			<UNSIGNED/>
+		 </field>
+		 <field name="serverName" type="C" size="255" />
+		 <field name="ipAddress" type="C" size="255" />
+		 <field name="port" type="C" size="255" />
+		 <field name="terminalKey" type="C" size="255" />
+		 <field name="statsProxyURL" type="C" size="255" />
+	</table>
+</schema>
+
