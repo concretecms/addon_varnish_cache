@@ -31,3 +31,4 @@ class VarnishServers {
 		$db = Loader::db();
 		return $db->Execute('delete from VarnishServers where id=?',array($id));
 	}
+}
