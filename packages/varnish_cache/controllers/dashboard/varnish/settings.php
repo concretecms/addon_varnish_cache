@@ -29,6 +29,18 @@ class DashboardVarnishSettingsController extends DashboardBaseController {
 	}
 	*/
 
+	public function delete($serverID,$token) {
+		Loader::model('varnish_servers','varnish_cache');
+		$valt = Loader::helper('validation/token');
+		if($valt->validate('delete_varnish_server',$token)) {
+			VarnishServers::delete($serverID);
+			$this->set('success',t('Server entry removed.'));
+		} else {
+			$this->error->add(t('Invalid token. Try again'));
+		}
+		$this->view();
+	}
+
 	public function saved() {
 		$this->set('success', t('Varnish settings saved successfully.'));
 		$this->view();

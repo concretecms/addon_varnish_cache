@@ -17,7 +17,7 @@ class DashboardVarnishAddEditServerController extends DashboardBaseController {
 		if(!$e->has()) {
 			Loader::model('varnish_servers','varnish_cache');
 			VarnishServers::save($this->post());
-			$this->redirect('/dashboard/varnish/settings/');
+			$this->redirect('/dashboard/varnish/settings/saved/');
 		}
 	}
 

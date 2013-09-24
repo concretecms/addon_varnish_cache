@@ -17,7 +17,7 @@ class VarnishServers {
 	public static function save($data) {
 		$db = Loader::db();
 		return $db->Replace('VarnishServers',
-			array('serverID'=>$data['serverID'],
+			array('serverID'=>(int)$data['serverID'],
 					'serverName'=>$data['serverName'],
 					'ipAddress'=>$data['ipAddress'],
 					'port'=>$data['port'],
@@ -30,6 +30,6 @@ class VarnishServers {
 
 	public static function delete($id) {
 		$db = Loader::db();
-		return $db->Execute('delete from VarnishServers where id=?',array($id));
+		return $db->Execute('delete from VarnishServers where serverID=?',array($id));
 	}
 }

@@ -9,7 +9,7 @@ print $h->getDashboardPaneHeaderWrapper($paneTitle, false, 'span8 offset2', fals
 
 <form method="post" action="<?=$this->action('save')?>" class="form-horizontal">
 <?if (!$newServer) {
-	echo $f->hidden('serverID',$serverID);
+	echo $f->hidden('serverID',$data['serverID']);
 } ?>
 
 <div class="ccm-pane-body">
