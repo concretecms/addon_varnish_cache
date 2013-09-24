@@ -43,7 +43,17 @@
 				<attributekey handle="icon_dashboard">
 					<value>icon-cog</value>
 				</attributekey>
-			</attributes>        
+			</attributes>
+        </page>
+			<page name="Add Server" path="/dashboard/varnish/add_edit" filename="/dashboard/varnish/add_edit.php" pagetype="" description="" package="varnish_cache">
+			<attributes>
+				<attributekey handle="meta_keywords">
+					<value>server, configuration, varnish</value>
+				</attributekey>
+				<attributekey handle="icon_dashboard">
+					<value>icon-cog</value>
+				</attributekey>
+			</attributes>
         </page>
     </singlepages>
 </concrete5-cif>

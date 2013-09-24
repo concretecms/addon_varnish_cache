@@ -5,40 +5,27 @@ $p = Package::getByHandle('varnish_cache');
 print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'span8 offset2', false);
 ?>
 
-<form method="post" action="<?=$this->action('save')?>" class="form-horizontal">
 
 <div class="ccm-pane-body">
 	<fieldset>
-		<legend><?=t('Control Terminal')?></legend>
-		<div class="control-group">
-			<?=$f->label('VARNISH_CONTROL_TERMINAL_HOST', t('Host'))?>
-			<div class="controls">
-				<?=$f->text('VARNISH_CONTROL_TERMINAL_HOST', $p->config('VARNISH_CONTROL_TERMINAL_HOST'), array('placeholder' => '127.0.0.1'))?>
-			</div>
-		</div>
-		<div class="control-group">
-			<?=$f->label('VARNISH_CONTROL_TERMINAL_PORT', t('Port'))?>
-			<div class="controls">
-				<?=$f->text('VARNISH_CONTROL_TERMINAL_PORT', $p->config('VARNISH_CONTROL_TERMINAL_PORT'), array('placeholder' => '6082'))?>
-			</div>
-		</div>
-		<div class="control-group">
-			<?=$f->label('VARNISH_CONTROL_TERMINAL_KEY', t('Key'))?>
-			<div class="controls">
-				<?=$f->text('VARNISH_CONTROL_TERMINAL_KEY', $p->config('VARNISH_CONTROL_TERMINAL_KEY'))?>
-				<a href="#" class="launch-tooltip" title="<?=t('Enter your optional control terminal key here, if you have defined one.')?>"><i class="icon-question-sign"></i></a>
-			</div>
-		</div>
-	</fieldset>
-
-	<fieldset>
-		<legend><?=t('Statistics Proxy')?></legend>
-		<div class="control-group">
-			<?=$f->label('VARNISH_VARNISHSTATS_PROXY_URL', t('Proxy URL'))?>
-			<div class="controls">
-				<?=$f->text('VARNISH_VARNISHSTATS_PROXY_URL', $p->config('VARNISH_VARNISHSTATS_PROXY_URL'))?>
-			</div>
-		</div>
+		<legend><?=t('Configured Servers')?></legend>
+		<?if (count($servers)) {
+			foreach($servers as $server) {?>
+				<div class="something-nice">
+					<?=t("%s (%s:%s), Terminal Key: %s",
+						strlen($server['serverName']) ? $server['serverName'] : t('Unnamed'),
+						$server['ipAddress'],
+						$server['port'],
+						strlen($server['terminalKey']) ? "'{$server['terminalKey']}'" : t('None set'));
+					//button edit
+					//button delete
+					?>
+				</div>
+			<?}?>
+		<?} else {?>
+			<div class="alert alert-info"><?=t('You have not yet added any Varnish servers.');?></div>
+		<?}
+			//add button ?>
 	</fieldset>
 
 	<fieldset>
@@ -48,6 +35,7 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'sp
 
 		<? 
 		$s = $cache->getVarnishAdminSocket();
+			//foreach sockets as s {
 		try {
 		    @$s->connect(1);
 		    ?>
@@ -72,9 +60,7 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'sp
 
 </div>
 <div class="ccm-pane-footer">
-	<button type="submit" class="btn btn-primary pull-right"><?=t('Save')?></button>
 </div>
-</form>
 
 <?
 print $h->getDashboardPaneFooterWrapper(false);

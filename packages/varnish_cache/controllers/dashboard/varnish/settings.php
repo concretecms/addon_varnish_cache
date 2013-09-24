@@ -4,9 +4,11 @@ class DashboardVarnishSettingsController extends DashboardBaseController {
 	// note can't extend settings because we might have an infinite redirect
 
 	public function view() {
+		Loader::model('varnish_servers','varnish_cache');
 		$cache = PageCache::getLibrary();
 		$this->cache = PageCache::getLibrary();
 		$this->set("cache", $this->cache);
+		$this->set('servers',VarnishServers::get());
 	}
 
 	public function invalid_settings() {
@@ -14,6 +16,7 @@ class DashboardVarnishSettingsController extends DashboardBaseController {
 		$this->view();
 	}
 
+	/*
 	public function save() {
 
 		$p = Package::getByHandle('varnish_cache');
@@ -24,6 +27,7 @@ class DashboardVarnishSettingsController extends DashboardBaseController {
 		$this->redirect('/dashboard/varnish/settings', 'saved');
 
 	}
+	*/
 
 	public function saved() {
 		$this->set('success', t('Varnish settings saved successfully.'));
