@@ -2,31 +2,41 @@
 $h = Loader::helper('concrete/dashboard');
 $f = Loader::helper('form');
 $p = Package::getByHandle('varnish_cache');
-print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'span8 offset2', false);
+$paneTitle = $newServer ? t('Add A Varnish Server') : t('Edit Varnish Server Settings');
+print $h->getDashboardPaneHeaderWrapper($paneTitle, false, 'span8 offset2', false);
 //TODO make this work for an individual server. Add controller
 ?>
 
 <form method="post" action="<?=$this->action('save')?>" class="form-horizontal">
+<?if (!$newServer) {
+	echo $f->hidden('serverID',$serverID);
+} ?>
 
 <div class="ccm-pane-body">
 	<fieldset>
 		<legend><?=t('Control Terminal')?></legend>
 		<div class="control-group">
-			<?=$f->label('VARNISH_CONTROL_TERMINAL_HOST', t('Host'))?>
+			<?=$f->label('serverName', t('Server Name'))?>
 			<div class="controls">
-				<?=$f->text('VARNISH_CONTROL_TERMINAL_HOST', $p->config('VARNISH_CONTROL_TERMINAL_HOST'), array('placeholder' => '127.0.0.1'))?>
+				<?=$f->text('serverName', $data['serverName'], array('placeholder' => t('Optional')))?>
 			</div>
 		</div>
 		<div class="control-group">
-			<?=$f->label('VARNISH_CONTROL_TERMINAL_PORT', t('Port'))?>
+			<?=$f->label('ipAddress', t('Host'))?>
 			<div class="controls">
-				<?=$f->text('VARNISH_CONTROL_TERMINAL_PORT', $p->config('VARNISH_CONTROL_TERMINAL_PORT'), array('placeholder' => '6082'))?>
+				<?=$f->text('ipAddress', $data['ipAddress'], array('placeholder' => '127.0.0.1'))?>
 			</div>
 		</div>
 		<div class="control-group">
-			<?=$f->label('VARNISH_CONTROL_TERMINAL_KEY', t('Key'))?>
+			<?=$f->label('port', t('Port'))?>
 			<div class="controls">
-				<?=$f->text('VARNISH_CONTROL_TERMINAL_KEY', $p->config('VARNISH_CONTROL_TERMINAL_KEY'))?>
+				<?=$f->text('port', $data['port'], array('placeholder' => '6082'))?>
+			</div>
+		</div>
+		<div class="control-group">
+			<?=$f->label('terminalKey', t('Key'))?>
+			<div class="controls">
+				<?=$f->text('terminalKey', $data['terminalKey'])?>
 				<a href="#" class="launch-tooltip" title="<?=t('Enter your optional control terminal key here, if you have defined one.')?>"><i class="icon-question-sign"></i></a>
 			</div>
 		</div>
@@ -35,9 +45,9 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'sp
 	<fieldset>
 		<legend><?=t('Statistics Proxy')?></legend>
 		<div class="control-group">
-			<?=$f->label('VARNISH_VARNISHSTATS_PROXY_URL', t('Proxy URL'))?>
+			<?=$f->label('statsProxyURL', t('Proxy URL'))?>
 			<div class="controls">
-				<?=$f->text('VARNISH_VARNISHSTATS_PROXY_URL', $p->config('VARNISH_VARNISHSTATS_PROXY_URL'))?>
+				<?=$f->text('statsProxyURL', $data['statsProxyURL'])?>
 			</div>
 		</div>
 	</fieldset>

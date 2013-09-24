@@ -17,14 +17,15 @@ class VarnishServers {
 	public static function save($data) {
 		$db = Loader::db();
 		return $db->Replace('VarnishServers',
-			array('id'=>$data['id'],
+			array('serverID'=>$data['serverID'],
 					'serverName'=>$data['serverName'],
 					'ipAddress'=>$data['ipAddress'],
 					'port'=>$data['port'],
 					'terminalKey'=>$data['terminalKey'],
 					'statsProxyURL'=>$data['statsProxyURL']
 			),
-			'id');
+			'serverID',
+			true);
 	}
 
 	public static function delete($id) {

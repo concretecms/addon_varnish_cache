@@ -11,24 +11,34 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'sp
 		<legend><?=t('Configured Servers')?></legend>
 		<?if (count($servers)) {
 			foreach($servers as $server) {?>
-				<div class="something-nice">
-					<? echo t("%s (%s:%s), Terminal Key: %s",
-						strlen($server['serverName']) ? $server['serverName'] : t('Unnamed'),
-						$server['ipAddress'],
-						$server['port'],
-						strlen($server['terminalKey']) ? "'{$server['terminalKey']}'" : t('None set'));
-						echo "<br/>";
-						echo t("Statistics Proxy URL: %s",strlen($server['proxyURL']) ? $server['proxyURL'] : t('None set'));
-					//button edit
-					//button delete
-					?>
+				<div class="well clearfix">
+					<ul class="span4">
+						<li>
+						<strong>
+						<?= t("%s (%s : %s)",
+								strlen($server['serverName']) ? $server['serverName'] : t('Unnamed'),
+								$server['ipAddress'],
+								$server['port'])
+								?>
+						</strong>
+						</li>
+						<li>
+							<?= t("Terminal Key: %s",strlen($server['terminalKey']) ? "'{$server['terminalKey']}'" : t('None set'));?>
+						</li>
+						<li>
+							<?= t("Statistics Proxy URL: %s",strlen($server['statsProxyURL']) ? $server['statsProxyURL'] : t('None set'));?>
+						</li>
+					</ul>
+					<div class="btn-group pull-right">
+						<a href="<?=View::url('/dashboard/varnish/add_edit_server',$server['serverID'])?>" class="btn btn-primary"><?=t('Edit')?></a>
+						<a href="<?=View::url('/dashboard/varnish/add_edit_server',$server['serverID'])?>" class="btn btn-danger"><?=t('Delete')?></a>
+					</div>
 				</div>
 			<?}?>
 		<?} else {?>
 			<div class="alert alert-info"><?=t('You have not yet added any Varnish servers.');?></div>
-		<?}
-			//add button ?>
-		<a href="<?=View::url('/dashboard/varnish/add_edit_server.php"></a>
+		<? } ?>
+		<a href="<?=View::url('/dashboard/varnish/add_edit_server')?>" class="btn btn-primary pull-right"><?=t('New Server')?></a>
 	</fieldset>
 
 	<fieldset>
