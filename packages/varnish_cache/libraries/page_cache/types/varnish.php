@@ -6,12 +6,14 @@ class VarnishPageCache extends PageCache {
 
 	//this needs to be changed to be per-server.
 	//we can probably just pass in a serverID.
-	public function getVarnishAdminSocket() {
+	public function getVarnishAdminSocket($server) {
+		//Loader::model('varnish_servers','varnish_cache'); //server is just going to be an array here
 		Loader::library('3rdparty/varnish_admin_socket', 'varnish_cache');
-		$p = Package::getByHandle('varnish_cache');
-		$s = new VarnishAdminSocket($p->config('VARNISH_CONTROL_TERMINAL_HOST'), $p->config('VARNISH_CONTROL_TERMINAL_PORT'), VARNISH_CACHE_VERSION);
-		if ($p->config('VARNISH_CONTROL_TERMINAL_KEY')) {
-			$s->set_auth($p->config('VARNISH_CONTROL_TERMINAL_KEY'));
+		//$server = VarnishServers::getByID($serverID);
+
+		$s = new VarnishAdminSocket($server['serverIP'],$server['port']);
+		if ($server['terminalKey']) {
+			$s->set_auth($server['terminalKey']);
 		}
 		return $s;
 	}
@@ -62,14 +64,18 @@ class VarnishPageCache extends PageCache {
 	//I guess you would get every instance of a varnish server and
 	// request that purge for each server.
 	public function purge(Page $c) {
-		$vas = $this->getVarnishAdminSocket();
-		$vas->connect(1);
-		if (!$c->getCollectionPath()) {
-			$path = '/';
-		} else {
-			$path = $c->getCollectionPath();
+		Loader::model('varnish_servers','varnish_cache');
+		$servers = VarnishServers::get();
+		foreach($servers as $server) {
+			$vas = $this->getVarnishAdminSocket($server);
+			$vas->connect(1);
+			if (!$c->getCollectionPath()) {
+				$path = '/';
+			} else {
+				$path = $c->getCollectionPath();
+			}
+			$vas->purge_url($path);
 		}
-		$vas->purge_url($path);
 	}
 
 	public function set(Page $c, $content) {
