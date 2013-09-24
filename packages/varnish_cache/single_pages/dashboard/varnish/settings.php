@@ -12,11 +12,13 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'sp
 		<?if (count($servers)) {
 			foreach($servers as $server) {?>
 				<div class="something-nice">
-					<?=t("%s (%s:%s), Terminal Key: %s",
+					<? echo t("%s (%s:%s), Terminal Key: %s",
 						strlen($server['serverName']) ? $server['serverName'] : t('Unnamed'),
 						$server['ipAddress'],
 						$server['port'],
 						strlen($server['terminalKey']) ? "'{$server['terminalKey']}'" : t('None set'));
+						echo "<br/>";
+						echo t("Statistics Proxy URL: %s",strlen($server['proxyURL']) ? $server['proxyURL'] : t('None set'));
 					//button edit
 					//button delete
 					?>
@@ -26,6 +28,7 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'sp
 			<div class="alert alert-info"><?=t('You have not yet added any Varnish servers.');?></div>
 		<?}
 			//add button ?>
+		<a href="<?=View::url('/dashboard/varnish/add_edit_server.php"></a>
 	</fieldset>
 
 	<fieldset>

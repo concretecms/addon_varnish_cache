@@ -45,7 +45,7 @@
 				</attributekey>
 			</attributes>
         </page>
-			<page name="Add Server" path="/dashboard/varnish/add_edit" filename="/dashboard/varnish/add_edit.php" pagetype="" description="" package="varnish_cache">
+			<page name="Add Server" path="/dashboard/varnish/add_edit_server" filename="/dashboard/varnish/add_edit_server.php" pagetype="" description="" package="varnish_cache">
 			<attributes>
 				<attributekey handle="meta_keywords">
 					<value>server, configuration, varnish</value>
