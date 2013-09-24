@@ -4,6 +4,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 class VarnishPageCache extends PageCache {
 
+	//this needs to be changed to be per-server.
+	//we can probably just pass in a serverID.
 	public function getVarnishAdminSocket() {
 		Loader::library('3rdparty/varnish_admin_socket', 'varnish_cache');
 		$p = Package::getByHandle('varnish_cache');
@@ -56,6 +58,9 @@ class VarnishPageCache extends PageCache {
 		$vas->purge_url('.');
 	}
 
+	//This is a weirder situation.
+	//I guess you would get every instance of a varnish server and
+	// request that purge for each server.
 	public function purge(Page $c) {
 		$vas = $this->getVarnishAdminSocket();
 		$vas->connect(1);

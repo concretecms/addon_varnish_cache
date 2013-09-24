@@ -9,6 +9,8 @@ class VarnishStatistics {
 		return $this->statisticItems[$key];
 	}
 
+
+	//this should be able to take a serverID and get the URL for that server.
 	public static function get() {
 		if (!isset(self::$statistics)) {
 			$vs = new VarnishStatistics();
