@@ -8,13 +8,17 @@ class DashboardVarnishBaseController extends DashboardBaseController {
 			throw new Exception('You must enable Varnish as your page caching library before you may continue.');
 		}
 
+		Loader::model('varnish_servers','varnish_cache');
 		$cache = PageCache::getLibrary();
 		$this->cache = PageCache::getLibrary();
-		$this->socket = $this->cache->getVarnishAdminSocket();
-		try {
-			@$this->socket->connect(1);
-		} catch(Exception $e) {
-			$this->redirect('/dashboard/varnish/settings', 'invalid_settings');
+		$servers = VarnishServers::get();
+		foreach($servers as $server) {
+			$this->socket = $this->cache->getVarnishAdminSocket($server);
+			try {
+				@$this->socket->connect(1);
+			} catch(Exception $e) {
+				$this->redirect('/dashboard/varnish/settings', 'invalid_settings');
+			}
 		}
 
 		$this->set('cache', $cache);

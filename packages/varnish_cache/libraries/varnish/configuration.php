@@ -32,19 +32,26 @@ class VarnishConfiguration {
 	}
 
 	public function enable() {
+		Loader::model('varnish_servers','varnish_cache');
 		$cache = PageCache::getLibrary();
-		$socket = $cache->getVarnishAdminSocket();
-		$socket->connect(1);
-		try {
-			@$socket->command('vcl.load ' . $this->confHandle . ' ' . $this->confFile, $code);
-		} catch(Exception $e) {} // we don't care
+		$servers = VarnishServers::get();
+		foreach($servers as $server) {
+			$socket = $cache->getVarnishAdminSocket($server);
+			$socket->connect(1);
+			try {
+				@$socket->command('vcl.load ' . $this->confHandle . ' ' . $this->confFile, $code);
+			} catch(Exception $e) {} // we don't care
 
-		$socket->command('vcl.use ' . $this->confHandle, $code);
+			$socket->command('vcl.use ' . $this->confHandle, $code);
+		}
 	}
 
 	public function isVarnishConfigurationFileActive() {
 		$cache = PageCache::getLibrary();
-		$socket = $cache->getVarnishAdminSocket();
+		Loader::model('varnish_servers','varnish_cache');
+		$servers = VarnishServers::get();
+
+		$socket = $cache->getVarnishAdminSocket($servers[0]);
 		$socket->connect(1);
 		$result = trim($socket->command('vcl.list', $code));
 		$list = explode("\n", $result);
@@ -56,7 +63,6 @@ class VarnishConfiguration {
 				}
 			}
 		}
-
 	}
 	
 }

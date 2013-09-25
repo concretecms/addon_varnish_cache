@@ -67,6 +67,7 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'sp
 
 		<?
 		//TODO : add statistics check
+		//if strlen statsURL >>> this stuff, otherwise "No url set for servnername"
 		$statistics = VarnishStatistics::get();
 		if (is_object($statistics)) { ?>
 			<div class="alert alert-success"><?=t('Successfully connected to Varnish statistics.')?></div>
