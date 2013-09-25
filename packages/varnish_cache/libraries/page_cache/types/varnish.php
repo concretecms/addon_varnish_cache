@@ -11,7 +11,7 @@ class VarnishPageCache extends PageCache {
 		Loader::library('3rdparty/varnish_admin_socket', 'varnish_cache');
 		//$server = VarnishServers::getByID($serverID);
 
-		$s = new VarnishAdminSocket($server['serverIP'],$server['port']);
+		$s = new VarnishAdminSocket($server['ipAddress'],$server['port']);
 		if ($server['terminalKey']) {
 			$s->set_auth($server['terminalKey']);
 		}
