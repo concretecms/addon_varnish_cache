@@ -47,22 +47,26 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'sp
 
 		<h4><?=t('Management Console')?></h4>
 
-		<? 
-		$s = $cache->getVarnishAdminSocket();
-			//foreach sockets as s {
-		try {
-		    @$s->connect(1);
-		    ?>
-				<div class="alert alert-success"><?=t('Successfully connected to control terminal.')?></div>
-				<?
-		} catch(Exception $e) { ?>
-			<div class="alert alert-error"><?=$e->getMessage()?></div>
-		<? } ?>
+		<?
+		foreach ($servers as $server) {
+
+			$s = $cache->getVarnishAdminSocket($server);
+				//foreach sockets as s {
+			try {
+				 @$s->connect(1);
+				 ?>
+					<div class="alert alert-success"><?=t('Successfully connected to control terminal for %s.', strlen($server['serverName']) ? $server['serverName']:$server['ipAddress'])?></div>
+					<?
+			} catch(Exception $e) { ?>
+				<div class="alert alert-error"><?=$e->getMessage()?></div>
+			<? }
+		} ?>
 	
 
 		<h4><?=t('Statistics')?></h4>
 
-		<? 
+		<?
+		//TODO : add statistics check
 		$statistics = VarnishStatistics::get();
 		if (is_object($statistics)) { ?>
 			<div class="alert alert-success"><?=t('Successfully connected to Varnish statistics.')?></div>
