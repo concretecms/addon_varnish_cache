@@ -22,7 +22,7 @@ class DashboardVarnishBaseController extends DashboardBaseController {
 		}
 
 		$this->set('cache', $cache);
-		$this->set('socket', $this->socket);
+		$this->set('socket', $this->socket); //socket could be rethought
 	}
 
 	

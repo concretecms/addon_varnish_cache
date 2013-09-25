@@ -11,11 +11,11 @@ class VarnishStatistics {
 
 
 	//this should be able to take a serverID and get the URL for that server.
-	public static function get() {
+	public static function get($server) {
 		if (!isset(self::$statistics)) {
 			$vs = new VarnishStatistics();
 			try {
-				$vs->load();
+				$vs->load($server['statsProxyURL']);
 				self::$statistics = $vs;
 			} catch(Exception $e) {
 				self::$statistics = false;
@@ -25,9 +25,8 @@ class VarnishStatistics {
 		return self::$statistics;
 	}
 
-	public function load() {
+	public function load($url) {
 		$p = Package::getByHandle('varnish_cache');
-		$url = $p->config('VARNISH_VARNISHSTATS_PROXY_URL');
 		if ($url) {
 			$contents = Loader::helper('file')->getContents($url);
 			if ($contents) {

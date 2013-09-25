@@ -13,7 +13,7 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'sp
 		<?if (count($servers)) {
 			foreach($servers as $server) {?>
 				<div class="well clearfix">
-					<ul class="span4">
+					<ul class="span4 unstyled">
 						<li>
 						<strong>
 						<?= t("%s (%s : %s)",
@@ -68,12 +68,18 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'sp
 		<?
 		//TODO : add statistics check
 		//if strlen statsURL >>> this stuff, otherwise "No url set for servnername"
-		$statistics = VarnishStatistics::get();
-		if (is_object($statistics)) { ?>
-			<div class="alert alert-success"><?=t('Successfully connected to Varnish statistics.')?></div>
-		<? } else { ?>
-			<div class="alert alert-error"><?=t('Unable to retrieve statistics from URL.')?></div>
-		<? } ?>
+		foreach($servers as $server) {
+			if (strlen($server['statsProxyURL'])) {
+				$statistics = VarnishStatistics::get($server);
+				if (is_object($statistics)) { ?>
+					<div class="alert alert-success"><?=t('Successfully connected to Varnish statistics for %s.', strlen($server['serverName']) ? $server['serverName']:$server['ipAddress'])?></div>
+				<? } else { ?>
+					<div class="alert alert-error"><?=t('Unable to retrieve statistics for %s.',strlen($server['serverName']) ? $server['serverName']:$server['ipAddress'])?></div>
+				<? }
+			} else { ?>
+				<div class="alert alert-info"><?=t('No statistics URL set for %s.',strlen($server['serverName']) ? $server['serverName']:$server['ipAddress'])?></div>
+			<?}
+		}?>
 
 	</fieldset>
 

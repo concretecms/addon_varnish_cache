@@ -4,17 +4,24 @@
 class DashboardVarnishRestartController extends DashboardVarnishBaseController {
 
 	public function submit() {
-		$s = $this->cache->getVarnishAdminSocket();
-		$s->connect(1);
+		Loader::model('varnish_servers','varnish_cache');
+		$servers = VarnishServers::get();
 		if ($this->post('start')) {
-			$s->start();
+			foreach($servers as $server) {
+				$s = $this->cache->getVarnishAdminSocket($server);
+				$s->connect(1);
+				$s->start();
+			}
 			$this->redirect('/dashboard/varnish/restart');
 		}
 		if ($this->post('stop')) {
-			$s->stop();
+			foreach($servers as $server) {
+				$s = $this->cache->getVarnishAdminSocket($server);
+				$s->connect(1);
+				$s->stop();
+			}
 			$this->redirect('/dashboard/varnish/restart');
 		}
 	}
-
 
 }

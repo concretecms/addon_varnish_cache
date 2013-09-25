@@ -2,8 +2,9 @@
 $h = Loader::helper('concrete/dashboard');
 print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Statistics'), false, 'span8 offset2');
 ?>
-
-<? if (is_object($statistics)) { ?>
+<? foreach($statisticsInfo as $info) {?>
+	<h2><?=$info['server']?></h2>
+<?   if (is_object($info['stats'])) { ?>
 	
 	<fieldset>
 		<legend><?=t('Connections')?></legend>
@@ -82,7 +83,8 @@ table.table	th, table.table td {
 
 <? } else { ?>
 	<p><?=t('Statistics currently unavailable.')?></p>
-<? } ?>
+<? }
+} ?>
 
 <?
 print $h->getDashboardPaneFooterWrapper();
