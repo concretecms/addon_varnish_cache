@@ -15,7 +15,6 @@ class DashboardVarnishStatisticsController extends DashboardVarnishBaseControlle
 			$statsChunk['server'] = strlen($server['serverName']) ? $server['serverName'] : $server['ipAddress'];
 			$statisticsInfo[] = $statsChunk;
 		}
-		Log::addEntry(var_export($statisticsInfo,true),"debug");
 		$this->set('statisticsInfo',$statisticsInfo);
 	}
 }
