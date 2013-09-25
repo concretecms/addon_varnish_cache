@@ -17,22 +17,21 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'sp
 						<li>
 						<strong>
 						<?= t("%s (%s : %s)",
-								strlen($server['serverName']) ? $server['serverName'] : t('Unnamed'),
-								$server['ipAddress'],
-								$server['port'])
+								strlen($server->serverName) ? $server->serverName : t('Unnamed'),
+								$server->ipAddress,
+								$server->port)
 								?>
 						</strong>
 						</li>
 						<li>
-							<?= t("Terminal Key: %s",strlen($server['terminalKey']) ? "'{$server['terminalKey']}'" : t('None set'));?>
+							<?= t("Terminal Key: %s",strlen($server->terminalKey) ? "'{$server->terminalKey}'" : t('None set'));?>
 						</li>
 						<li>
-							<?= t("Statistics Proxy URL: %s",strlen($server['statsProxyURL']) ? $server['statsProxyURL'] : t('None set'));?>
+							<?= t("Statistics Proxy URL: %s",strlen($server->statsProxyURL) ? $server->statsProxyURL : t('None set'));?>
 						</li>
 					</ul>
 					<div class="btn-group pull-right">
-						<a href="<?=View::url('/dashboard/varnish/add_edit_server',$server['serverID'])?>" class="btn btn-primary"><?=t('Edit')?></a>
-						<a href="<?=View::url('/dashboard/varnish/settings/delete/',$server['serverID'],$delete_token)?>" class="btn btn-danger"><?=t('Delete')?></a>
+						<a href="<?=View::url('/dashboard/varnish/server_details',$server->serverID)?>" class="btn"><?=t('Details')?></a>
 					</div>
 				</div>
 			<?}?>
@@ -41,7 +40,7 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'sp
 		<? } ?>
 		<a href="<?=View::url('/dashboard/varnish/add_edit_server')?>" class="btn btn-primary pull-right"><?=t('New Server')?></a>
 	</fieldset>
-
+<? /*
 	<fieldset>
 		<legend><?=t('Test Connection')?></legend>
 
@@ -82,7 +81,7 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Settings'), false, 'sp
 		}?>
 
 	</fieldset>
-
+	*/ ?>
 </div>
 <div class="ccm-pane-footer">
 </div>

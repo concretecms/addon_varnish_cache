@@ -1,35 +1,88 @@
-<?
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 
-defined('C5_EXECUTE') or die("Access Denied.");
-
-class VarnishServers {
-	public static function get() {
-		$db = Loader::db();
-		return $db->GetAll("select * from VarnishServers order by serverName");
+class VarnishServerList extends DatabaseItemList {
+		
+	public function __construct() {
+		$this->setQuery('select * from VarnishServers');
 	}
+	
+	public function get($itemsToGet = 0, $offset = 0) {
+		$servers = array();
+		$rows = parent::get($itemsToGet, $offset);
+		foreach($rows as $r) {
+			$server = new VarnishServer();
+			foreach($r as $k=>$v){
+				$server->$k = $v;
+			}
+			$servers[] = $server;
+		}
+		return $servers;
+	}
+}
 
+class VarnishServer extends Model {
+	
+	public $serverID;
+	public $serverName;
+	public $ipAddress;
+	public $port;
+	public $terminalKey;
+	public $statsProxyURL;
+	protected $socket;
+	
+	
+	public $_table = 'VarnishServers';
+	
+	public function loadByID($id) {
+		$db = Loader::db();
+		parent::Load('serverID='.$db->quote($id));
+	}
+	
 	public static function getByID($id) {
-		$db = Loader::db();
-		return $db->GetRow("select * from VarnishServers where serverID = ?",array($id));
+		$server = new self();
+		$server->loadByID($id);
+		if($server->serverID > 0) {
+			return $server;
+		}
+		return false;
 	}
+	
+	public function getSocket() {
+		if($this->socket instanceof VarnishAdminSocket) {
+			return $this->socket;
+		} else {
+			Loader::library('3rdparty/varnish_admin_socket', 'varnish_cache');
+			$this->socket = new VarnishAdminSocket($this->ipAddress, $this->port);
+			if ($this->terminalKey) {
+				$this->socket->set_auth($this->terminalKey);
+			}
+			return $this->socket;
+		}	
+	}
+	
+	/**
+	 * Flushes all cache on server
+	 * @return void
+	 */
+	public function flush() {
+		$vas = $this->getSocket();
+		$vas->connect(1);
+		$vas->purge_url('.');
+	}
+	
+	
+	/**
+	 * Flushes cache for a particular page path
+	 * @return void
+	*/
+	public function purgeURL($url) {
+		if(!strlen($url)) {
+			$url = '/';
+		}
+		$vas = $this->getSocket();
+		$vas->connect(1);
+		$vas->purge_url($url);
+	}
+	
 
-	//replace data, adodb's Replace: 0 on failure, 1 on update success, 2 on record-not-found insert success.
-	public static function save($data) {
-		$db = Loader::db();
-		return $db->Replace('VarnishServers',
-			array('serverID'=>(int)$data['serverID'],
-					'serverName'=>$data['serverName'],
-					'ipAddress'=>$data['ipAddress'],
-					'port'=>$data['port'],
-					'terminalKey'=>$data['terminalKey'],
-					'statsProxyURL'=>$data['statsProxyURL']
-			),
-			'serverID',
-			true);
-	}
-
-	public static function delete($id) {
-		$db = Loader::db();
-		return $db->Execute('delete from VarnishServers where serverID=?',array($id));
-	}
 }

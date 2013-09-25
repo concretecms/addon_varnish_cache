@@ -15,7 +15,7 @@ class VarnishStatistics {
 		if (!isset(self::$statistics)) {
 			$vs = new VarnishStatistics();
 			try {
-				$vs->load($server['statsProxyURL']);
+				$vs->load($server->statsProxyURL);
 				self::$statistics = $vs;
 			} catch(Exception $e) {
 				self::$statistics = false;

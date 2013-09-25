@@ -5,8 +5,9 @@ print $h->getDashboardPaneHeaderWrapper(t('Start/Stop Server'), false, 'span8 of
 
 <fieldset>
 <form method="post" action="<?=$this->action('submit')?>">
+	<?=$form->hidden('serverID',$server->serverID);?>
 	<legend><?=t('Control Server')?></legend>
-	<? if ($socket->status()) { ?>
+	<? if (@$socket->status()) { ?>
 		<div class="alert alert-success"><?=t('Varnish is currently running.')?></div>
 		<div class="form-actions">
 			<button type="submit" name="stop" value="1" class="btn btn-warning"><?=t('Stop')?></button>

@@ -16,8 +16,18 @@ class DashboardVarnishAddEditServerController extends DashboardBaseController {
 		}
 		if(!$e->has()) {
 			Loader::model('varnish_servers','varnish_cache');
-			VarnishServers::save($this->post());
-			$this->redirect('/dashboard/varnish/settings/saved/');
+			
+			$server = new VarnishServer();
+			if($this->post('serverID')) {
+				$server->loadByID($this->post('serverID'));
+			}
+			$server->ipAddress = $this->post('ipAddress');
+			$server->serverName = $this->post('serverName');
+			$server->port = $this->post('port');
+			$server->terminalKey = $this->post('terminalKey');
+			$server->statsProxyURL = $this->post('statsProxyURL');
+			$server->Save();
+			$this->redirect('/dashboard/varnish/servers/saved/');
 		}
 	}
 
@@ -25,8 +35,10 @@ class DashboardVarnishAddEditServerController extends DashboardBaseController {
 		$e = Loader::helper('validation/error');
 		if (is_numeric($serverID)) {
 			Loader::model('varnish_servers','varnish_cache');
-			$data = VarnishServers::getByID($serverID);
-			if(is_array($data) && count($data)) {
+			
+			$server = VarnishServer::getByID($serverID);
+			if($server) {
+				$data = get_object_vars($server);
 				$this->set('data',$data);
 				$this->set('newServer',false);
 			} else {

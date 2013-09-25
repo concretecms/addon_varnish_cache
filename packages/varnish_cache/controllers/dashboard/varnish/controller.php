@@ -4,7 +4,7 @@
 class DashboardVarnishController extends DashboardVarnishBaseController {
 
 	public function view() {
-		$this->redirect('/dashboard/varnish/restart');
+		$this->redirect('/dashboard/varnish/server_configuration');
 	}
 	
 }

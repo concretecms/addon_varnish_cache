@@ -1,6 +1,6 @@
 <? defined('C5_EXECUTE') or die(_("Access Denied."));
 
-class DashboardVarnishSettingsController extends DashboardBaseController {
+class DashboardVarnishServersController extends DashboardBaseController {
 	// note can't extend settings because we might have an infinite redirect
 
 	public function view() {
@@ -8,7 +8,9 @@ class DashboardVarnishSettingsController extends DashboardBaseController {
 		$cache = PageCache::getLibrary();
 		$this->cache = PageCache::getLibrary();
 		$this->set("cache", $this->cache);
-		$this->set('servers',VarnishServers::get());
+		$serverList = new VarnishServerList();
+		$servers = $serverList->get();
+		$this->set('servers',$servers);
 	}
 
 	public function invalid_settings() {
@@ -33,7 +35,10 @@ class DashboardVarnishSettingsController extends DashboardBaseController {
 		Loader::model('varnish_servers','varnish_cache');
 		$valt = Loader::helper('validation/token');
 		if($valt->validate('delete_varnish_server',$token)) {
-			VarnishServers::delete($serverID);
+				
+			$server = VarnishServer::getByID($serverID);
+			$server->Delete();
+			
 			$this->set('success',t('Server entry removed.'));
 		} else {
 			$this->error->add(t('Invalid token. Try again'));

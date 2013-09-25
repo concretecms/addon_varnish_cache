@@ -2,17 +2,19 @@
 
 class DashboardVarnishStatisticsController extends DashboardVarnishBaseController {
 
-	public function view() {
+	public function view($serverID = NULL) {
 		Loader::model('varnish_servers','varnish_cache');
-		$servers = VarnishServers::get();
-		foreach($servers as $server) {
+		$serverList = new VarnishServerList();
+		$servers = $serverList->get();
+		
+		foreach($servers as $key=>$server) {
 			$statistics = VarnishStatistics::get($server);
 			if(is_object($statistics)) {
-				$statisticsInfo[]['stats'] = $statistics;
+				$statisticsInfo[$key]['stats'] = $statistics;
 			} else {
-				$statisticsInfo[]['stats'] = false;
+				$statisticsInfo[$key]['stats'] = false;
 			}
-			$statisticsInfo[]['server'] = strlen($server['serverName']) ? $server['serverName'] : $server['ipAddress'];
+			$statisticsInfo[$key]['server'] = strlen($server->serverName) ? $server->serverName : $serve->ipAddress;
 		}
 		$this->set('statisticsInfo',$statisticsInfo);
 	}

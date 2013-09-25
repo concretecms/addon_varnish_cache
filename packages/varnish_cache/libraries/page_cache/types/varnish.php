@@ -1,21 +1,11 @@
-<?
-
-defined('C5_EXECUTE') or die("Access Denied.");
+<?php defined('C5_EXECUTE') or die("Access Denied.");
 
 class VarnishPageCache extends PageCache {
 
 	//this needs to be changed to be per-server.
 	//we can probably just pass in a serverID.
-	public function getVarnishAdminSocket($server) {
-		//Loader::model('varnish_servers','varnish_cache'); //server is just going to be an array here
-		Loader::library('3rdparty/varnish_admin_socket', 'varnish_cache');
-		//$server = VarnishServers::getByID($serverID);
-
-		$s = new VarnishAdminSocket($server['ipAddress'],$server['port']);
-		if ($server['terminalKey']) {
-			$s->set_auth($server['terminalKey']);
-		}
-		return $s;
+	public function getVarnishAdminSocket(VarnishServer $server) {
+		return $server->getAdminSocket();
 	}
 
 	public function getRecord($mixed) {
@@ -23,78 +13,43 @@ class VarnishPageCache extends PageCache {
 		return $ur;
 	}
 
-	/*
-
-	protected function getCacheFile($mixed) {
-		$key = $this->getCacheKey($mixed);
-		$filename = $key . '.cache';
-		if ($key) {
-			if (strlen($key) == 1) {
-				$dir = DIR_FILES_PAGE_CACHE . '/' . $key;
-			} else if (strlen($key) == 2) {
-				$dir = DIR_FILES_PAGE_CACHE . '/' . $key[0] . '/' . $key[1];
-			} else {
-				$dir = DIR_FILES_PAGE_CACHE . '/' . $key[0] . '/' . $key[1] . '/' . $key[2];
-			}
-			if ($dir && (!is_dir($dir))) {
-				mkdir($dir, DIRECTORY_PERMISSIONS_MODE, true);
-			}
-			$path = $dir . '/' . $filename;
-			return $path;
-		}
-	}
+	/**
+	 * functionality not supported by varnish
 	*/
+	public function purgeByRecord(PageCacheRecord $rec) { }
+	
 
-	public function purgeByRecord(PageCacheRecord $rec) {
-		/*
-		$file = $this->getCacheFile($rec);
-		if ($file && file_exists($file)) {
-			unlink($file);
-		}
-		*/
-	}
-
+	/**
+	 * Flushes cache for all servers
+	 * @return void
+	*/ 
 	public function flush() {
-		$vas = $this->getVarnishAdminSocket();
-		$vas->connect(1);
-		$vas->purge_url('.');
+		Loader::model('varnish_servers','varnish_cache');
+		$sl = new VarnishServerList();
+		$servers = $sl->get();
+		foreach($servers as $s) {
+			$s->flush();
+		}
 	}
 
-	//This is a weirder situation.
-	//I guess you would get every instance of a varnish server and
-	// request that purge for each server.
+	
+	/**
+	 * Flushes cache for a page on all varnish servres
+	 * @param Page $c
+	 * @return void
+	*/
 	public function purge(Page $c) {
 		Loader::model('varnish_servers','varnish_cache');
-		$servers = VarnishServers::get();
-		foreach($servers as $server) {
-			$vas = $this->getVarnishAdminSocket($server);
-			$vas->connect(1);
-			if (!$c->getCollectionPath()) {
-				$path = '/';
-			} else {
-				$path = $c->getCollectionPath();
-			}
-			$vas->purge_url($path);
+		$sl = new VarnishServerList();
+		$servers = $sl->get();
+		foreach($servers as $s) {
+			$s->purgeURL($c->getCollectionPath());
 		}
 	}
 
-	public function set(Page $c, $content) {
-		/*
-		if (!is_dir(DIR_FILES_PAGE_CACHE)) {
-			mkdir(DIR_FILES_PAGE_CACHE);
-			touch(DIR_FILES_PAGE_CACHE . '/index.html');
-		}
-
-		$lifetime = $c->getCollectionFullPageCachingLifetimeValue();
-		$file = $this->getCacheFile($c);
-		if ($file) {
-			$response = new PageCacheRecord($c, $content, $lifetime);
-			if ($content) {
-				file_put_contents($file, serialize($response));
-			}
-		}
-		*/
-	}
-
+	/**
+	 * functionality not supported by varnish
+	*/
+	public function set(Page $c, $content) {}
 
 }

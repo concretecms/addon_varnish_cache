@@ -35,7 +35,7 @@
 				</attributekey>
 			</attributes>        
         </page>
-        <page name="Settings" path="/dashboard/varnish/settings" filename="/dashboard/varnish/settings.php" pagetype="" description="" package="varnish_cache">
+        <page name="Severs" path="/dashboard/varnish/servers" filename="/dashboard/varnish/servers.php" pagetype="" description="" package="varnish_cache">
 			<attributes>
 				<attributekey handle="meta_keywords">
 					<value>server, configuration, varnish</value>
@@ -45,7 +45,17 @@
 				</attributekey>
 			</attributes>
         </page>
-			<page name="Add Server" path="/dashboard/varnish/add_edit_server" filename="/dashboard/varnish/add_edit_server.php" pagetype="" description="" package="varnish_cache">
+        <page name="Server Details" path="/dashboard/varnish/server_details" filename="/dashboard/varnish/server_details.php" pagetype="" description="" package="varnish_cache">
+			<attributes>
+				<attributekey handle="meta_keywords">
+					<value>server, details, varnish</value>
+				</attributekey>
+				<attributekey handle="icon_dashboard">
+					<value>icon-cog</value>
+				</attributekey>
+			</attributes>
+        </page>
+		<page name="Add Server" path="/dashboard/varnish/add_edit_server" filename="/dashboard/varnish/add_edit_server.php" pagetype="" description="" package="varnish_cache">
 			<attributes>
 				<attributekey handle="meta_keywords">
 					<value>server, configuration, varnish</value>
