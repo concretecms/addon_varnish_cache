@@ -8,12 +8,14 @@ class DashboardVarnishStatisticsController extends DashboardVarnishBaseControlle
 		foreach($servers as $server) {
 			$statistics = VarnishStatistics::get($server);
 			if(is_object($statistics)) {
-				$statisticsInfo[]['stats'] = $statistics;
+				$statsChunk['stats'] = $statistics;
 			} else {
-				$statisticsInfo[]['stats'] = false;
+				$statsChunk['stats'] = false;
 			}
-			$statisticsInfo[]['server'] = strlen($server['serverName']) ? $server['serverName'] : $server['ipAddress'];
+			$statsChunk['server'] = strlen($server['serverName']) ? $server['serverName'] : $server['ipAddress'];
+			$statisticsInfo[] = $statsChunk;
 		}
+		Log::addEntry(var_export($statisticsInfo,true),"debug");
 		$this->set('statisticsInfo',$statisticsInfo);
 	}
 }

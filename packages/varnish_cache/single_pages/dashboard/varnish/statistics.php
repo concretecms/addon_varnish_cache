@@ -4,7 +4,9 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Statistics'), false, '
 ?>
 <? foreach($statisticsInfo as $info) {?>
 	<h2><?=$info['server']?></h2>
-<?   if (is_object($info['stats'])) { ?>
+<?   if (is_object($info['stats'])) {
+	$statistics = $info['stats'];
+ ?>
 	
 	<fieldset>
 		<legend><?=t('Connections')?></legend>
