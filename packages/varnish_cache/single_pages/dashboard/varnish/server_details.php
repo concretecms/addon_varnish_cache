@@ -45,13 +45,16 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Details'), false, 'spa
 
 		<?
 		
-		$s = $server->getSocket();
+		$socket = $server->getSocket();
 
 		try {
-			 @$s->connect(1);
+			 @$socket->connect(1);
+			 $connected = true;
 			 ?>
-				<div class="alert alert-success"><?=t('Successfully connected to control terminal for %s.', strlen($server->serverName) ? $server->serverName:$server->ipAddress)?></div>
-				<?
+			 <div class="alert alert-success">
+			 	<?=t('Successfully connected to control terminal for %s.', strlen($server->serverName) ? $server->serverName:$server->ipAddress)?>
+			 </div>
+			 <?
 		} catch(Exception $e) { ?>
 			<div class="alert alert-error"><?=$e->getMessage()?></div>
 		<? } ?>
@@ -63,17 +66,26 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Details'), false, 'spa
 		if (strlen($server->statsProxyURL)) {
 			$statistics = VarnishStatistics::get($server);
 			if (is_object($statistics)) { ?>
-				<div class="alert alert-success"><?=t('Successfully connected to Varnish statistics for %s.', strlen($server['serverName']) ? $server['serverName']:$server['ipAddress'])?></div>
+				<div class="alert alert-success"><?=t('Successfully connected to Varnish statistics for %s.', strlen($server->serverName) ? $server->serverName:$server->ipAddress)?></div>
 			<? } else { ?>
-				<div class="alert alert-error"><?=t('Unable to retrieve statistics for %s.',strlen($server['serverName']) ? $server['serverName']:$server['ipAddress'])?></div>
+				<div class="alert alert-error"><?=t('Unable to retrieve statistics for %s.',strlen($server->serverName) ? $server->serverName:$server->ipAddress)?></div>
 			<? }
 		} else { ?>
 			<div class="alert alert-info"><?=t('No statistics URL set for %s.',strlen($server->serverName) ? $server->serverName:$server->ipAddress)?></div>
 		<? } ?>
-		
-		<h4><?=t('Start / Stop Server')?></h4>
-		
-
+		<?php if($connected) { ?>
+			<h4><?=t('Start / Stop Server')?></h4>
+			<? if ($socket->status()) { ?>
+				<div class="alert alert-success"><?=t('Varnish is currently running.')?></div>
+			<? } else { ?>
+				<div class="alert alert-info"><?=t('Varnish is not currently running.')?></div>
+			<? } ?>
+			<div class="well">
+				<div class="btn-group pull-right">
+					<a href="<?=View::url('/dashboard/varnish/restart',$server->serverID)?>" class="btn btn-primary"><?=t('Start / Stop Server')?></a>
+				</div>
+			</div>
+		<? } ?>
 	</fieldset>
 
 	<fieldset>

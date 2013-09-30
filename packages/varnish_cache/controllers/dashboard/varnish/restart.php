@@ -34,8 +34,12 @@ class DashboardVarnishRestartController extends DashboardVarnishBaseController {
 		if(!$server) {
 			$this->redirect('/dashboard/varnish/servers');
 		}
+		
+		$socket = $server->getSocket();
+		$socket->connect(1);
+		
 		$this->set('server',$server);
-		$this->set('socket',$server->getSocket());
+		$this->set('socket',$socket);
 	}
 
 }

@@ -16,6 +16,9 @@
 				<attributekey handle="icon_dashboard">
 					<value>icon-wrench</value>
 				</attributekey>
+				<attributekey handle="exclude_nav">
+					<value>1</value>
+				</attributekey>
 			</attributes>        
         </page>
         <page name="Statistics" path="/dashboard/varnish/statistics" filename="/dashboard/varnish/statistics.php" pagetype="" description="" package="varnish_cache">
@@ -32,6 +35,9 @@
 				</attributekey>
 				<attributekey handle="icon_dashboard">
 					<value>icon-globe</value>
+				</attributekey>
+				<attributekey handle="exclude_nav">
+					<value>1</value>
 				</attributekey>
 			</attributes>        
         </page>
@@ -53,6 +59,9 @@
 				<attributekey handle="icon_dashboard">
 					<value>icon-cog</value>
 				</attributekey>
+				<attributekey handle="exclude_nav">
+					<value>1</value>
+				</attributekey>
 			</attributes>
         </page>
 		<page name="Add Server" path="/dashboard/varnish/add_edit_server" filename="/dashboard/varnish/add_edit_server.php" pagetype="" description="" package="varnish_cache">
@@ -62,6 +71,9 @@
 				</attributekey>
 				<attributekey handle="icon_dashboard">
 					<value>icon-cog</value>
+				</attributekey>
+				<attributekey handle="exclude_nav">
+					<value>1</value>
 				</attributekey>
 			</attributes>
         </page>

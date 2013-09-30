@@ -127,7 +127,7 @@ class VarnishAdminSocket {
      * @return string the banner, in case you're interested
      */
     public function connect( $timeout = 5 ){
-        $this->fp = fsockopen( $this->host, $this->port, $errno, $errstr, $timeout );
+        $this->fp = @fsockopen( $this->host, $this->port, $errno, $errstr, $timeout );
         if( ! is_resource( $this->fp ) ){
             // error would have been raised already by fsockopen
             throw new Exception( sprintf('Failed to connect to varnishadm on %s:%s; "%s"', $this->host, $this->port, $errstr ));
