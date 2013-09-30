@@ -26,6 +26,7 @@ class DashboardVarnishAddEditServerController extends DashboardBaseController {
 			$server->port = $this->post('port');
 			$server->terminalKey = $this->post('terminalKey');
 			$server->statsProxyURL = $this->post('statsProxyURL');
+			$server->serverVersion = $this->post('serverVersion');
 			$server->Save();
 			$this->redirect('/dashboard/varnish/servers/saved/');
 		}

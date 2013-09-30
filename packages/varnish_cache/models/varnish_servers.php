@@ -28,6 +28,7 @@ class VarnishServer extends Model {
 	public $port;
 	public $terminalKey;
 	public $statsProxyURL;
+	public $serverVersion;
 	protected $socket;
 	
 	
@@ -52,7 +53,7 @@ class VarnishServer extends Model {
 			return $this->socket;
 		} else {
 			Loader::library('3rdparty/varnish_admin_socket', 'varnish_cache');
-			$this->socket = new VarnishAdminSocket($this->ipAddress, $this->port);
+			$this->socket = new VarnishAdminSocket($this->ipAddress, $this->port, $this->serverVersion);
 			if ($this->terminalKey) {
 				$this->socket->set_auth($this->terminalKey);
 			}

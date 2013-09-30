@@ -11,6 +11,7 @@
 		 <field name="port" type="C" size="255" />
 		 <field name="terminalKey" type="C" size="255" />
 		 <field name="statsProxyURL" type="C" size="255" />
+		 <field name="serverVersion" type="C" size="50" />
 	</table>
 </schema>
 

@@ -34,6 +34,12 @@ print $h->getDashboardPaneHeaderWrapper($paneTitle, false, 'span8 offset2', fals
 			</div>
 		</div>
 		<div class="control-group">
+			<?=$f->label('terminalKey', t('Version'))?>
+			<div class="controls">
+				<?=$f->text('serverVersion', $data['serverVersion'], array('placeholder' => '3.1'))?>
+			</div>
+		</div>
+		<div class="control-group">
 			<?=$f->label('terminalKey', t('Key'))?>
 			<div class="controls">
 				<?=$f->text('terminalKey', $data['terminalKey'])?>

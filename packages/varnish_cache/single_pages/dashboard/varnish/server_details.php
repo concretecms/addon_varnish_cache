@@ -21,6 +21,7 @@ print $h->getDashboardPaneHeaderWrapper(t('Varnish Server Details'), false, 'spa
 							?>
 					</strong>
 					</li>
+					<li><?=t('Server Version')?> <?=$server->serverVersion?></li>
 					<li>
 						<?= t("Terminal Key: %s",strlen($server->terminalKey) ? "'{$server->terminalKey}'" : t('None set'));?>
 					</li>

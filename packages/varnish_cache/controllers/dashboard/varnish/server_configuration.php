@@ -33,7 +33,7 @@ class DashboardVarnishServerConfigurationController extends DashboardVarnishBase
 		try {
 			$conf = VarnishConfiguration::getByHandle($confHandle);
 			$conf->enable($server);
-			echo var_dump($conf, $server, $confHandle); exit;
+			
 			$this->redirect('/dashboard/varnish/server_configuration', 'configuration_switched', $server->serverID);
 		} catch(Exception $e) {
 			$this->error->add($e->getMessage());
