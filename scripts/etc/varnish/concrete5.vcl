@@ -130,9 +130,9 @@ sub vcl_fetch {
 
     ## if the object was trying to set a cookie, 
     ## it probably shouldn't be cached.
-    if (beresp.http.cookie) {
-        return(hit_for_pass);
-    }
+    # if (beresp.http.cookie) {
+    #    return(hit_for_pass);
+    # }
     
      ## if the object is specifically saying 'don't cache me' -  
      ## obey it.
